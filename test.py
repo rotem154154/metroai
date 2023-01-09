@@ -1,5 +1,5 @@
 from diffusers import StableDiffusionPipeline, DPMSolverMultistepScheduler
-
+import torch
 model_id = "stabilityai/stable-diffusion-2-1"
 
 # Use the DPMSolverMultistepScheduler (DPM-Solver++) scheduler here instead
