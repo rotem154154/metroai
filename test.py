@@ -1,11 +1,13 @@
-import torch
+from diffusers import StableDiffusionPipeline, DPMSolverMultistepScheduler
 
-if torch.cuda.is_available():
-    print("CUDA is available!")
-else:
-    print("CUDA is not available.")
+model_id = "stabilityai/stable-diffusion-2-1"
 
-if torch.cuda.device_count() > 0:
-    print("Number of GPUs:", torch.cuda.device_count())
-else:
-    print("No GPUs available.")
+# Use the DPMSolverMultistepScheduler (DPM-Solver++) scheduler here instead
+pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float16)
+pipe.scheduler = DPMSolverMultistepScheduler.from_config(pipe.scheduler.config)
+pipe = pipe.to("cuda")
+
+prompt = "a photo of an astronaut riding a horse on mars"
+image = pipe(prompt).images[0]
+
+image.save("astronaut_rides_horse.png")
